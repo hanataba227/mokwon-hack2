@@ -1,0 +1,129 @@
+:root{
+    --green-900: #05400a;
+    --green-700: #0b5d2b;
+    --green-500: #2fa84f;
+    --green-400: #63d37a;
+    --white: #ffffff;
+    --muted: #f3fff5;
+}
+
+/* 전체 배경 및 기본 텍스트 */
+html, body, .stApp {
+    background: var(--white);
+    color: var(--green-900);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+/* 상단 타이틀 강조 */
+header .decoration, .stAppHeader {
+    background: linear-gradient(90deg, var(--white), var(--muted));
+}
+
+/* 사이드바 배경 및 텍스트 흰색 유지 */
+section[data-testid="stSidebar"] {
+    background: var(--green-700);
+    border-right: 1px solid #0a4d22;
+    padding: 1rem 0.75rem;
+    color: var(--white);
+}
+
+/* 사이드바 내부 모든 텍스트 흰색 */
+section[data-testid="stSidebar"] *,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] div,
+section[data-testid="stSidebar"] span {
+    color: var(--white) !important;
+}
+
+/* 사이드바 내부 입력 요소 투명 배경 */
+section[data-testid="stSidebar"] .stSelectbox>div>div,
+section[data-testid="stSidebar"] .stRadio>div>label,
+section[data-testid="stSidebar"] .stMultiselect>div>div,
+section[data-testid="stSidebar"] .stTextInput>div>input,
+section[data-testid="stSidebar"] .stTextArea>div>textarea {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 10px !important;
+    margin: 4px 0;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* ⭐ 사이드바 선택항목 Hover 시 진한 초록 배경 */
+section[data-testid="stSidebar"] .stRadio > div > label:hover,
+section[data-testid="stSidebar"] .stSelectbox > div:hover,
+section[data-testid="stSidebar"] .stMultiselect > div:hover {
+    background-color: var(--green-900) !important;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* 컨테이너 카드 스타일 (메인 화면 글씨 초록색) */
+.stExpander, .stBlock, .css-1lcbmhc {
+    background: linear-gradient(180deg, #ffffff, #fbfffb);
+    border: 1px solid #edf9ee;
+    border-radius: 10px;
+    padding: 0.6rem;
+    color: var(--green-900);
+}
+
+/* 메인 화면 입력 요소 */
+textarea, input, .stTextInput>div>input, .stTextArea>div>textarea {
+    background: var(--white) !important;
+    border: 1px solid #e0f1e3 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    color: var(--green-900) !important;
+}
+
+/* 버튼 스타일 */
+button[role="button"], .stButton>button {
+    background-color: var(--green-500) !important;
+    color: var(--white) !important;
+    border: none !important;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04) !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+}
+button[role="button"]:hover, .stButton>button:hover {
+    background-color: var(--green-400) !important;
+}
+
+/* 상태/알림 박스 */
+.stAlert [data-testid="stMarkdownContainer"] p { color: var(--green-900); }
+
+/* 기본 텍스트 통일 (사이드바 제외) */
+.stMarkdown, .stWrite, .css-1v3fvcr p,
+.stTextInput label, .stTextArea label,
+.stRadio label, .stSelectbox label,
+.stTextInput div>input::placeholder, .stTextArea div>textarea::placeholder {
+    color: var(--green-900) !important;
+}
+
+/* 다운로드 버튼 */
+.stDownloadButton>button, .stDownloadButton button {
+    background-color: transparent !important;
+    color: var(--green-700) !important;
+    border: 1px solid #e6f9ea !important;
+}
+
+/* 캡션/작은 텍스트 */
+.stCaption, .css-1v3fvcr .stCaption {
+    color: var(--green-900);
+}
+
+/* 사이드바 토글 버튼 */
+button[title="Open sidebar"], button[title="Close sidebar"] {
+    color: var(--green-900) !important;
+    background-color: transparent !important;
+}
+
+/* 번역탭 입력/타깃 언어 선택 */
+.stSelectbox.label-input, .stSelectbox.label-input > div > div {
+    color: var(--green-900) !important; /* 입력 언어 초록색 */
+}
+.stSelectbox.label-target, .stSelectbox.label-target > div > div {
+    color: #0000FF !important; /* 타깃 언어 파란색 */
+}

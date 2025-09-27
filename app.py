@@ -99,6 +99,13 @@ def _do_translation(input_text: str, src_label: str, tgt_label: str, style_label
 if st.session_state.page == "🏠홈":
     st.title("한국어 학습을 위한 스마트 번역 & 학습 도구")
     st.markdown("#### 유학생이 한국어를 쉽게 배우고, 표현력을 자연스럽게 확장하도록 돕습니다.")
+    # 홈페이지 타이틀 아래: 우선 images 폴더의 특정 이미지를 먼저 표시하고 충분한 간격을 둔 뒤 다른 이미지를 표시
+    first_img = "images/translate-translation-vector-logo-design-template_1141934-3723.jpg"
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image(first_img, use_container_width=True)
+
     st.markdown("---")
     st.header("다국어 번역 & 한국어 문체 변환")
     st.subheader("설명")

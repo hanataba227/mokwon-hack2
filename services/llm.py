@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 import os
 import base64
 from openai import OpenAI
@@ -43,37 +43,3 @@ def chat(messages: List[Dict[str, str]], model: str | None = None, temperature: 
             )
             return resp.choices[0].message.content.strip()
         raise
-
-
-def completion(prompt: str, model: str | None = None, max_tokens: int = 256, temperature: float = 0.7) -> str:
-    """(필요 시) 구 텍스트 완성 모델 대체용. Chat 모델 프롬프트로 감싸 재사용 권장."""
-    system = "너는 간결하게 답변하는 도우미다."
-    user = prompt
-    return chat([
-        {"role": "system", "content": system},
-        {"role": "user", "content": user}
-    ], model=model, temperature=temperature)
-
-
-def vision_extract_bytes(image_bytes: bytes, prompt: str = "이미지 안의 한국어 텍스트를 그대로 추출해줘.", model: str | None = None) -> str:
-    """Responses 멀티모달 API 이용한 OCR 유사 추출."""
-    if model is None:
-        model = os.getenv("OPENAI_VISION_MODEL", "gpt-5-mini")
-    b64 = base64.b64encode(image_bytes).decode("utf-8")
-    client = get_client()
-    resp = client.responses.create(
-        model=model,
-        input=[{
-            "role": "user",
-            "content": [
-                {"type": "input_text", "text": prompt},
-                {"type": "input_image", "image": {"b64_json": b64}}
-            ]
-        }]
-    )
-    return getattr(resp, "output_text", "").strip()
-
-
-def vision_extract_file(image_path: str, prompt: str = "이미지 안의 한국어 텍스트를 그대로 추출해줘.") -> str:
-    with open(image_path, "rb") as f:
-        return vision_extract_bytes(f.read(), prompt=prompt)

@@ -6,14 +6,8 @@ from typing import Union
 
 try:
 	from PIL import Image
-except Exception:  # pragma: no cover - informative fallback
+except Exception: 
 	Image = None
-
-try:
-	import pytesseract
-except Exception:  # pragma: no cover
-	# 더 이상 pytesseract를 사용하지 않도록 기본값 None으로 둡니다.
-	pytesseract = None
 
 try:
 	import openai
@@ -50,13 +44,10 @@ def _read_image_bytes(uploaded: Union[bytes, "io.BufferedReader", str]) -> bytes
 
 def extract_text_from_image(uploaded: Union[bytes, "io.BufferedReader", str]) -> str:
 	"""이미지에서 텍스트를 추출하고(선택적으로) OpenAI로 후처리합니다.
-
 	Args:
 		uploaded: Streamlit 업로드 파일(읽기 가능), 바이트, 또는 파일 경로.
-
 	Returns:
 		이미지에서 추출된 텍스트(후처리된 텍스트). 텍스트가 없으면 빈 문자열을 반환할 수 있습니다.
-
 	Raises:
 		RuntimeError: 이미지 처리에 필요한 라이브러리나 OCR 백엔드가 없는 경우 발생합니다.
 	"""

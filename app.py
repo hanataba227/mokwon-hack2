@@ -264,7 +264,7 @@ elif st.session_state.page == "📝학습":
                     st.session_state.learning_results["diff"] = chat([
                         {"role": "system", "content": "두 문장의 차이점을 간결히 설명"},
                         {"role": "user", "content": f"수정 전: {record['input']}\n수정 후: {record['output']}"}
-                ])
+                    ])
             with col2:
                 if st.button("수정 단어 의미/구조"):
                     st.session_state.learning_results["meaning"] = chat([

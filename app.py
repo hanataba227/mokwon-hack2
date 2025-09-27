@@ -233,7 +233,12 @@ elif st.session_state.page == "🔎번역":
                 tgt_label_img = st.selectbox("타깃 언어", list(LANG_MAP.keys()), index=1, key="img_tgt")
             style_label_img = None
             if tgt_label_img == "한국어":
-                style_label_img = st.selectbox("한국어 문체 선택", list(STYLE_MAP.keys()), key="img_style")
+                style_label_img = st.selectbox(
+                    "한국어 문체 선택",
+                    list(STYLE_MAP.keys()),
+                    format_func=lambda k: f"{k} ： {STYLE_MAP[k]['desc']}",
+                    key="img_style"
+                )
             if st.button("이미지 실행", type="primary", key="run_image"):
                 extracted = extract_text_from_image(uploaded)
                 if not extracted:

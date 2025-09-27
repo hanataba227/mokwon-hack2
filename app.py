@@ -34,12 +34,20 @@ STYLE_MAP = {
         "desc": "일상 대화체. 블로그·채팅 등에 자연스러운 문장"
     },
     "쉬운문장": {
-        "label": "Basic Vocabulary",
+        "label": "Basic_Vocabulary",
         "desc": "어린이·외국인도 이해하기 쉬운 기본 단어 위주"
     },
     "한자어": {
         "label": "Hanja",
         "desc": "한자 기반 어휘를 많이 사용하는 문장"
+    },
+    "서술체": {
+        "label": "Narrative",
+        "desc": "서술형 문장. 사건이나 이야기등을 서술할 때 적합"
+    },
+    "묘사체": {
+        "label": "Descriptive",
+        "desc": "묘사형 문장. 대상이나 장면을 상세하게 묘사할 때 적합"
     }
 }
 
@@ -74,7 +82,8 @@ def _do_translation(input_text: str, src_label: str, tgt_label: str, style_label
     applied_style = None
     if tgt == "Korean" and style_label:
         applied_style = style_label
-        output_text = transform(translation, STYLE_MAP[style_label])
+        # transform에는 영어 라벨 문자열을 전달하도록 통일
+        output_text = transform(translation, STYLE_MAP[style_label]["label"])
     # 히스토리 저장
     st.session_state.history.insert(0, {
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

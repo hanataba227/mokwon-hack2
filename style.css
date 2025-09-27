@@ -265,3 +265,8 @@ section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked)
     border-color: #1d4ed8;
     font-weight: 600;
 }
+
+/* Streamlit Selectbox 내부의 검색 입력창을 숨김 */
+div[data-baseweb="select"] input {
+    caret-color: transparent !important; /* 커서(깜박이) 숨김 */
+}

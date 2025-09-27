@@ -365,5 +365,3 @@ elif st.session_state.page == "📝학습":
             if st.session_state.learning_results["example"]:
                 st.subheader("공부 예문")
                 st.write(st.session_state.learning_results["example"])
-            else:
-                st.warning("한국어에서 한국어로 수정된 기록만 사용 가능합니다.")

@@ -8,6 +8,7 @@ from datetime import datetime
 from services.translation import translate_any  # 양방향 번역
 from services.style import transform  # 한국어 스타일 변환
 from services.ocr import extract_text_from_image  # OCR
+from services.llm import chat  # llm
 
 load_dotenv()
 
@@ -37,8 +38,8 @@ def render_sidebar_menu():
         st.markdown("### 🌐 Ko-Connect")
         selection = st.radio(
             "페이지 이동",
-            ("홈", "번역", "기록"),
-            index=(0 if st.session_state.page not in ("홈","번역","기록") else ["홈","번역","기록"].index(st.session_state.page))
+            ("홈", "번역", "기록", "학습"),
+            index=(0 if st.session_state.page not in ("홈","번역","기록","학습") else ["홈","번역","기록","학습"].index(st.session_state.page))
         )
         st.markdown("---")
         st.caption("페이지 이동 시 결과는 세션에 저장됩니다.")
@@ -187,3 +188,60 @@ if st.session_state.get('page') == '번역' and 'prefill_text' in st.session_sta
     with st.expander("이전 기록에서 불러온 텍스트"):
         st.code(st.session_state.prefill_text)
     # 필요시 자동 입력 적용 로직 추가 가능
+
+# -------------------- 학습 페이지 --------------------
+elif st.session_state.page == "학습":
+    st.title("학습: 수정 단어 & 예문")
+    if not st.session_state.history:
+        st.info("저장된 번역 기록이 없습니다.")
+    else:
+        options = [
+            f"[{i+1}] {h['timestamp']} | {h['source_lang']}→{h['target_lang']}"
+            for i, h in enumerate(st.session_state.history)
+        ]
+        choice = st.selectbox("기록 선택", options)
+        idx = options.index(choice)
+        record = st.session_state.history[idx]
+
+        # 선택한 기록 표시
+        st.markdown("### 선택한 기록")
+        st.markdown("**입력**")
+        st.write(record['input'])
+        st.markdown("**출력**")
+        st.write(record['output'])
+        st.markdown("---")
+
+        # 결과 저장용 세션 키 초기화
+        if 'learning_results' not in st.session_state:
+            st.session_state.learning_results = {"diff": "", "meaning": "", "example": ""}
+
+        if record["source_lang"]=="한국어" and record["target_lang"]=="한국어":
+            st.markdown("### LLM 학습 도구")
+            if st.button("차이점 확인"):
+                st.session_state.learning_results["diff"] = chat([
+                    {"role":"system","content":"두 문장의 차이점을 간결히 설명"},
+                    {"role":"user","content":f"수정 전: {record['input']}\n수정 후: {record['output']}"}
+                ])
+            if st.button("수정 단어 의미/구조"):
+                st.session_state.learning_results["meaning"] = chat([
+                    {"role":"system","content":"수정된 문장에서 바뀐 단어들의 유의어·동의어 중심 의미와 문법적 특징을 설명"},
+                    {"role":"user","content":f"{record['input']}\n→\n{record['output']}"}
+                ])
+            if st.button("공부 예문 생성"):
+                st.session_state.learning_results["example"] = chat([
+                    {"role":"system","content":"수정된 단어를 활용한 한국어 학습용 예문을 3개 제시"},
+                    {"role":"user","content":f"{record['output']}"}
+                ])
+
+            # 버튼 결과를 항상 유지하여 출력
+            if st.session_state.learning_results["diff"]:
+                st.subheader("차이점")
+                st.write(st.session_state.learning_results["diff"])
+            if st.session_state.learning_results["meaning"]:
+                st.subheader("수정 단어 의미/구조")
+                st.write(st.session_state.learning_results["meaning"])
+            if st.session_state.learning_results["example"]:
+                st.subheader("공부 예문")
+                st.write(st.session_state.learning_results["example"])
+        else:
+            st.warning("한국어에서 한국어로 수정된 기록만 사용 가능합니다.")

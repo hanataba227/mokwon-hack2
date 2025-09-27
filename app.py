@@ -240,12 +240,9 @@ elif st.session_state.page == "📝학습":
             f"({h['source_lang']}→{h['target_lang']})" + (f"  –  {h['style']}" if h['style'] else "")
             for i, h in enumerate(st.session_state.history)
         ]
-        if not options:
-            st.warning("표시할 기록이 없습니다.")
-        else:
-            choice = st.selectbox("기록 선택", options)
-            idx = options.index(choice)
-            record = st.session_state.history[idx]
+        choice = st.selectbox("기록 선택", options)
+        idx = options.index(choice)
+        record = st.session_state.history[idx]
 
             # 선택한 기록 표시
             st.markdown("### 선택한 기록")

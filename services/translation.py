@@ -11,8 +11,8 @@ def translate_any(text: str, source_language: str, target_language: str, model: 
     """지정된 소스/타깃 언어 쌍에 대해 번역 수행.
     Args:
         text: 번역할 텍스트
-        source_language: 원본 언어 ("Korean", "English", "Vietnamese", "Chinese, "Japanese")
-        target_language: 타깃 언어 ("Korean", "English", "Vietnamese", "Chinese, "Japanese")
+        source_language: 원본 언어 ("Korean", "English", "Vietnamese", "Chinese", "Japanese")
+        target_language: 타깃 언어 ("Korean", "English", "Vietnamese", "Chinese", "Japanese")
         model: 사용할 LLM 모델명 (None이면 기본값)
     Returns:
         번역된 텍스트

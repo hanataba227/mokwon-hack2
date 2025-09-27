@@ -1,5 +1,5 @@
 import streamlit as st
-st.set_page_config(page_title="Ko-Connect", layout="wide")
+st.set_page_config(page_title="Konnect", layout="wide")
 
 import os
 from dotenv import load_dotenv

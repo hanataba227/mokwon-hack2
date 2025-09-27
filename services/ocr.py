@@ -97,8 +97,8 @@ def extract_text_from_image(uploaded: Union[bytes, "io.BufferedReader", str]) ->
 			input=[{
 				"role": "user",
 				"content": [
-					{"type": "input_text", "text": "이미지에서 텍스트를 추출하고, OCR 오류를 정리하여 정리된 텍스트만 반환하세요."},
-					{"type": "input_image", "image_url": data_uri},
+					{"type": "text", "text": "이미지에서 텍스트를 추출하고, OCR 오류를 정리하여 정리된 텍스트만 반환하세요."},
+					{"type": "image_url", "image_url": data_uri},
 				],
 			}],
 		)

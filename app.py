@@ -268,21 +268,21 @@ elif st.session_state.page == "📝학습":
                 {"role":"system","content":"수정된 문장에서 바뀐 단어들의 유의어·동의어 중심 의미와 문법적 특징을 설명"},
                 {"role":"user","content":f"{record['input']}\n→\n{record['output']}"}
             ])
-            if st.button("공부 예문 생성"):
-                st.session_state.learning_results["example"] = chat([
+        if st.button("공부 예문 생성"):
+            st.session_state.learning_results["example"] = chat([
                 {"role":"system","content":"수정된 단어를 활용한 한국어 학습용 예문을 3개 제시"},
                 {"role":"user","content":f"{record['output']}"}
             ])
 
-            # 버튼 결과를 항상 유지하여 출력
-            if st.session_state.learning_results["diff"]:
-                st.subheader("차이점")
-                st.write(st.session_state.learning_results["diff"])
-            if st.session_state.learning_results["meaning"]:
-                st.subheader("수정 단어 의미/구조")
-                st.write(st.session_state.learning_results["meaning"])
-            if st.session_state.learning_results["example"]:
-                st.subheader("공부 예문")
-                st.write(st.session_state.learning_results["example"])
-        else:
-            st.warning("한국어에서 한국어로 수정된 기록만 사용 가능합니다.")
+        # 버튼 결과를 항상 유지하여 출력
+        if st.session_state.learning_results["diff"]:
+            st.subheader("차이점")
+            st.write(st.session_state.learning_results["diff"])
+        if st.session_state.learning_results["meaning"]:
+            st.subheader("수정 단어 의미/구조")
+            st.write(st.session_state.learning_results["meaning"])
+        if st.session_state.learning_results["example"]:
+            st.subheader("공부 예문")
+            st.write(st.session_state.learning_results["example"])
+    else:
+        st.warning("한국어에서 한국어로 수정된 기록만 사용 가능합니다.")

@@ -93,7 +93,7 @@ def extract_text_from_image(uploaded: Union[bytes, "io.BufferedReader", str]) ->
 
 		# 한 번의 Responses API 호출로 이미지에서 텍스트 추출 및 정리 수행
 		response = client.responses.create(
-			model="gpt-4.1-mini",
+			model="gpt-4o-mini",
 			input=[{
 				"role": "user",
 				"content": [

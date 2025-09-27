@@ -232,3 +232,36 @@ section[data-testid="stSidebar"] .stButton:last-of-type::after{
     content:""; display:block; height:1px;
     background: rgba(255,255,255,.3); margin-top:18px; border-radius:1px;
 }
+
+/* ──────────────────────────────────────────
+   (이전 app.py 인라인) 사이드바 라디오를 버튼형으로 재스타일
+   - 원형 라디오 숨김
+   - 라벨을 버튼 UI로 변환
+   - 선택/호버 상태 시 강조
+────────────────────────────────────────── */
+section[data-testid="stSidebar"] div[role="radiogroup"] input[type="radio"] {
+    display: none !important;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label > div:first-child {
+    display: none !important; /* Streamlit 일부 구조 대비 */
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label {
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: background .15s, color .15s, border-color .15s;
+    font-weight: 500;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+    background: #eef2f6;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"],
+section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {
+    background: #2563eb;
+    color: #fff;
+    border-color: #1d4ed8;
+    font-weight: 600;
+}

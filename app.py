@@ -31,16 +31,21 @@ if "page" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []  # 각 항목: dict(timestamp, source_lang, target_lang, input, output, style(optional))
 
-# -------------------- 사이드바 --------------------
-with st.sidebar:
-    st.header("메뉴")
-    st.session_state.page = st.radio(
-        "페이지 이동",
-        ("홈", "번역", "기록"),
-        index=(0 if st.session_state.page not in ("홈", "번역", "기록") else ["홈","번역","기록"].index(st.session_state.page))
-    )
-    st.markdown("---")
-    st.caption("세션 유지: 페이지 이동 시 번역 결과는 '기록'에 저장됩니다.")
+def render_sidebar_menu():
+    """사이드바 메뉴 렌더링 함수."""
+    with st.sidebar:
+        st.markdown("### 🌐 Ko-Connect")
+        selection = st.radio(
+            "페이지 이동",
+            ("홈", "번역", "기록"),
+            index=(0 if st.session_state.page not in ("홈","번역","기록") else ["홈","번역","기록"].index(st.session_state.page))
+        )
+        st.markdown("---")
+        st.caption("페이지 이동 시 결과는 세션에 저장됩니다.")
+    st.session_state.page = selection
+
+# 사이드바 렌더 함수 호출
+render_sidebar_menu()
 
 # -------------------- 공통 함수 --------------------
 def _do_translation(input_text: str, src_label: str, tgt_label: str, style_label: str | None):

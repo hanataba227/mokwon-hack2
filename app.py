@@ -23,7 +23,7 @@ if not os.getenv("OPENAI_API_KEY"):
     st.stop()
 
 # -------------------- 전역 상수/매핑 --------------------
-LANG_MAP = {"한국어": "Korean", "영어": "English", "일본어": "Japanese", "중국어": "Chinese", "베트남어": "Vietnamese", "일본어": "Japanese"}
+LANG_MAP = {"한국어": "Korean", "영어": "English", "일본어": "Japanese", "중국어": "Chinese", "베트남어": "Vietnamese"}
 STYLE_MAP = {
     "문어체": {
         "label": "Formal",

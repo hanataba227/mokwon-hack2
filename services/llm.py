@@ -22,7 +22,7 @@ def chat(messages: List[Dict[str, str]], model: str | None = None, temperature: 
     1차 시도 실패 시 temperature 제거 후 재시도한다.
     """
     if model is None:
-        model = os.getenv("OPENAI_CHAT_MODEL", "gpt-5-mini")
+        model = os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini")
     client = get_client()
 
     # 1차 시도: 제공된 temperature 사용

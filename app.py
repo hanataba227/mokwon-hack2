@@ -23,8 +23,25 @@ if not os.getenv("OPENAI_API_KEY"):
     st.stop()
 
 # -------------------- 전역 상수/매핑 --------------------
-LANG_MAP = {"한국어": "Korean", "영어": "English", "베트남어": "Vietnamese", "중국어": "Chinese"}
-STYLE_MAP = {"문어체": "Formal", "구어체": "Informal", "쉬운문장": "Basic Vocabulary", "한자어": "Hanja"}
+LANG_MAP = {"한국어": "Korean", "영어": "English", "일본어": "Japanese", "중국어": "Chinese", "베트남어": "Vietnamese"}
+STYLE_MAP = {
+    "문어체": {
+        "label": "Formal",
+        "desc": "격식을 갖춘 공식 문장체. 논문·보고서 등에 적합"
+    },
+    "구어체": {
+        "label": "Informal",
+        "desc": "일상 대화체. 블로그·채팅 등에 자연스러운 문장"
+    },
+    "쉬운문장": {
+        "label": "Basic Vocabulary",
+        "desc": "어린이·외국인도 이해하기 쉬운 기본 단어 위주"
+    },
+    "한자어": {
+        "label": "Hanja",
+        "desc": "한자 기반 어휘를 많이 사용하는 문장"
+    }
+}
 
 # -------------------- 세션 초기화 --------------------
 if "page" not in st.session_state:
@@ -35,11 +52,11 @@ if "history" not in st.session_state:
 def render_sidebar_menu():
     """사이드바 메뉴 렌더링 함수."""
     with st.sidebar:
-        st.markdown("### 🌐 Ko-Connect")
+        st.markdown("### 🌐 Konnect")
         selection = st.radio(
             "페이지 이동",
-            ("홈", "번역", "기록", "학습"),
-            index=(0 if st.session_state.page not in ("홈","번역","기록","학습") else ["홈","번역","기록","학습"].index(st.session_state.page))
+            ("🏠홈", "🔎번역", "📄기록", "📝학습"),
+            index=(0 if st.session_state.page not in ("🏠홈","🔎번역","📄기록","📝학습") else ["🏠홈","🔎번역","📄기록","📝학습"].index(st.session_state.page))
         )
         st.markdown("---")
         st.caption("페이지 이동 시 결과는 세션에 저장됩니다.")
@@ -70,22 +87,24 @@ def _do_translation(input_text: str, src_label: str, tgt_label: str, style_label
     return output_text
 
 # -------------------- 홈 페이지 --------------------
-if st.session_state.page == "홈":
-    st.title("다국어 번역 & 한국어 문체 변환")
+if st.session_state.page == "🏠홈":
+    st.title("한국어 학습을 위한 스마트 번역 & 학습 도구")
+    st.markdown("#### 유학생이 한국어를 쉽게 배우고, 표현력을 자연스럽게 확장하도록 돕습니다.")
+    st.markdown("---")
+    st.header("다국어 번역 & 한국어 문체 변환")
     st.subheader("설명")
     st.write(
-        """이 애플리케이션은 한국어와 영어/베트남어/중국어 간 번역 및 
-        한국어 결과에 대한 문체(문어체/구어체/쉬운문장/한자어) 변환을 지원합니다. 
+        """한국어와 영어/일본어/중국어/베트남어 간 번역 및
+        한국어 결과에 대한 문체(문어체/구어체/쉬운문장/한자어) 변환을 지원합니다.
         좌측 사이드바에서 '번역' 페이지로 이동하여 텍스트 또는 이미지를 처리하고,
         생성된 결과는 자동으로 '기록' 페이지에 저장됩니다."""
     )
-    st.markdown("### 빠른 시작")
-    st.markdown("1. 사이드바에서 '번역' 선택 → 2. 입력 언어/타깃 언어 선택 → 3. 텍스트 입력 또는 이미지 업로드 → 4. 실행")
-    st.markdown("---")
-    st.markdown("#### 현재 저장된 결과 수: {}".format(len(st.session_state.history)))
+    st.subheader("주요 기능")
 
+    st.markdown("---")
+    st.markdown(f"#### 현재 저장된 결과 수: {len(st.session_state.history)}")
 # -------------------- 번역 페이지 --------------------
-elif st.session_state.page == "번역":
+elif st.session_state.page == "🔎번역":
     st.title("번역 / 문체 변환")
     input_mode = st.radio("입력 유형 선택", ("텍스트", "이미지"), horizontal=True)
 
@@ -98,7 +117,11 @@ elif st.session_state.page == "번역":
         text_input = st.text_area("번역 또는 문체 변환할 텍스트 입력")
         style_label = None
         if tgt_label == "한국어":
-            style_label = st.selectbox("한국어 문체 선택", list(STYLE_MAP.keys()))
+            style_label = st.selectbox(
+                "한국어 문체 선택",
+                list(STYLE_MAP.keys()),
+                format_func=lambda k: f"{k} ： {STYLE_MAP[k]['desc']}"
+            )
 
         if st.button("실행", type="primary"):
             if not text_input.strip():
@@ -141,7 +164,7 @@ elif st.session_state.page == "번역":
             st.info("이미지를 업로드하세요.")
 
 # -------------------- 기록 페이지 --------------------
-elif st.session_state.page == "기록":
+elif st.session_state.page == "📄기록":
     st.title("저장된 번역 기록")
     if not st.session_state.history:
         st.info("아직 저장된 기록이 없습니다. '번역' 페이지에서 새 결과를 생성하세요.")
@@ -190,7 +213,7 @@ if st.session_state.get('page') == '번역' and 'prefill_text' in st.session_sta
     # 필요시 자동 입력 적용 로직 추가 가능
 
 # -------------------- 학습 페이지 --------------------
-elif st.session_state.page == "학습":
+elif st.session_state.page == "📝학습":
     st.title("학습: 수정 단어 & 예문")
     if not st.session_state.history:
         st.info("저장된 번역 기록이 없습니다.")

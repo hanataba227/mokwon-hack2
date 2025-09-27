@@ -1,0 +1,272 @@
+:root{
+    --green-900: #05400a;
+    --green-700: #0b5d2b;
+    --green-500: #2fa84f;
+    --green-400: #63d37a;
+    --white: #ffffff;
+    --muted: #f3fff5;
+    --blue-500: #1E90FF;
+    --blue-700: #1C86EE;
+    --icon-size: 22px;
+}
+
+/* 전체 배경 및 기본 텍스트 */
+html, body, .stApp {
+    background: var(--white);
+    color: var(--green-900);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+/* 상단 타이틀 강조 */
+header .decoration, .stAppHeader {
+    background: linear-gradient(90deg, var(--white), var(--muted));
+}
+
+/* 사이드바 배경 및 텍스트 흰색 유지 */
+section[data-testid="stSidebar"] {
+    background: var(--green-700);
+    border-right: 1px solid #0a4d22;
+    padding: 1rem 0.75rem;
+    color: var(--white);
+}
+
+/* 사이드바 내부 모든 텍스트 흰색 */
+section[data-testid="stSidebar"] * {
+    color: var(--white) !important;
+}
+
+/* 사이드바 내부 입력 요소 투명 배경 */
+section[data-testid="stSidebar"] .stSelectbox>div>div,
+section[data-testid="stSidebar"] .stRadio>div>label,
+section[data-testid="stSidebar"] .stMultiselect>div>div,
+section[data-testid="stSidebar"] .stTextInput>div>input,
+section[data-testid="stSidebar"] .stTextArea>div>textarea {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 10px !important;
+    margin: 4px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* 사이드바 선택항목 Hover 시 진한 초록 배경 */
+section[data-testid="stSidebar"] .stRadio > div > label:hover,
+section[data-testid="stSidebar"] .stSelectbox > div:hover,
+section[data-testid="stSidebar"] .stMultiselect > div:hover {
+    background-color: var(--green-900) !important;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* 사이드바 버튼 색상 파랑, Hover 진한 파랑 */
+section[data-testid="stSidebar"] .stButton>button,
+section[data-testid="stSidebar"] button[role="button"] {
+    background-color: var(--blue-500) !important;
+    color: var(--white) !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+section[data-testid="stSidebar"] .stButton>button:hover,
+section[data-testid="stSidebar"] button[role="button"]:hover {
+    background-color: var(--blue-700) !important;
+}
+
+/* 컨테이너 카드 스타일 (메인 화면 글씨 초록색) */
+.stExpander, .stBlock, .css-1lcbmhc {
+    background: linear-gradient(180deg, #ffffff, #fbfffb);
+    border: 1px solid #edf9ee;
+    border-radius: 10px;
+    padding: 0.6rem;
+    color: var(--green-900);
+}
+
+/* 메인 화면 입력 요소 */
+textarea, input, .stTextInput>div>input, .stTextArea>div>textarea {
+    background: var(--white) !important;
+    border: 1px solid #e0f1e3 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    color: var(--green-900) !important;
+}
+
+/* 버튼 스타일 */
+button[role="button"], .stButton>button {
+    background-color: var(--green-500) !important;
+    color: var(--white) !important;
+    border: none !important;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04) !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+}
+button[role="button"]:hover, .stButton>button:hover {
+    background-color: var(--green-400) !important;
+}
+
+/* 상태/알림 박스 */
+.stAlert [data-testid="stMarkdownContainer"] p { color: var(--green-900); }
+
+/* 기본 텍스트 통일 (사이드바 제외) */
+.stMarkdown, .stWrite, .css-1v3fvcr p,
+.stTextInput label, .stTextArea label,
+.stRadio label, .stSelectbox label,
+.stTextInput div>input::placeholder, .stTextArea div>textarea::placeholder {
+    color: var(--green-900) !important;
+}
+
+/* 다운로드 버튼 */
+.stDownloadButton>button, .stDownloadButton button {
+    background-color: transparent !important;
+    color: var(--green-700) !important;
+    border: 1px solid #e6f9ea !important;
+}
+
+/* 캡션/작은 텍스트 */
+.stCaption, .css-1v3fvcr .stCaption {
+    color: var(--green-900);
+}
+
+/* 사이드바 토글 버튼 */
+button[title="Open sidebar"], button[title="Close sidebar"] {
+    color: var(--green-900) !important;
+    background-color: transparent !important;
+}
+
+/* 번역탭 입력/타깃 언어 선택 */
+.stSelectbox.label-input, .stSelectbox.label-input > div > div { color: var(--green-900) !important; }
+.stSelectbox.label-target, .stSelectbox.label-target > div > div { color: var(--blue-500) !important; }
+
+/* ──────────────────────────────────────────
+   사이드바 페이지 링크: 아이콘 + 정렬
+   (st.page_link 기반 a[data-testid^="stPageLink"])
+────────────────────────────────────────── */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]{
+    display:flex; align-items:center; gap:12px;
+}
+
+/* 공통 아이콘 베이스 (currentColor = 흰색) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]::before{
+    content:"";
+    width: var(--icon-size);
+    height: var(--icon-size);
+    display:inline-block;
+    background: currentColor;
+    -webkit-mask-size: contain; mask-size: contain;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    opacity: .95;
+}
+
+/* 1: 홈(집) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(1)::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+}
+
+/* 2: 번역(문서) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(2)::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+}
+
+/* 3: 기록(햄버거) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(3)::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+}
+
+/* ──────────────────────────────────────────
+   선택사항(메뉴)과 세션 안내 사이 얇은 구분선
+   - 마지막 페이지 링크 아래에 선 생성
+────────────────────────────────────────── */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:last-of-type{
+    position:relative;
+}
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:last-of-type::after{
+    content:"";
+    display:block;
+    height:1px;
+    background: rgba(255,255,255,.3);
+    margin-top:18px;
+    border-radius:1px;
+}
+
+/* ───────── Fallback: 메뉴가 버튼으로 구현된 경우(선/아이콘) ───────── */
+section[data-testid="stSidebar"] .stButton { display:block; }
+section[data-testid="stSidebar"] .stButton>button{
+    display:flex; align-items:center; gap:12px;
+}
+section[data-testid="stSidebar"] .stButton:nth-of-type(1)>button::before,
+section[data-testid="stSidebar"] .stButton:nth-of-type(2)>button::before,
+section[data-testid="stSidebar"] .stButton:nth-of-type(3)>button::before{
+    content:""; width:var(--icon-size); height:var(--icon-size);
+    background: currentColor;
+    -webkit-mask-size: contain; mask-size: contain;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    opacity:.95;
+}
+/* 1 홈 */
+section[data-testid="stSidebar"] .stButton:nth-of-type(1)>button::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+}
+/* 2 번역 */
+section[data-testid="stSidebar"] .stButton:nth-of-type(2)>button::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+}
+/* 3 기록 */
+section[data-testid="stSidebar"] .stButton:nth-of-type(3)>button::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+}
+/* 버튼 메뉴 마지막 아래 선 */
+section[data-testid="stSidebar"] .stButton:last-of-type{ position:relative; }
+section[data-testid="stSidebar"] .stButton:last-of-type::after{
+    content:""; display:block; height:1px;
+    background: rgba(255,255,255,.3); margin-top:18px; border-radius:1px;
+}
+
+/* ──────────────────────────────────────────
+   (이전 app.py 인라인) 사이드바 라디오를 버튼형으로 재스타일
+   - 원형 라디오 숨김
+   - 라벨을 버튼 UI로 변환
+   - 선택/호버 상태 시 강조
+────────────────────────────────────────── */
+section[data-testid="stSidebar"] div[role="radiogroup"] input[type="radio"] {
+    display: none !important;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label > div:first-child {
+    display: none !important; /* Streamlit 일부 구조 대비 */
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label {
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: background .15s, color .15s, border-color .15s;
+    font-weight: 500;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+    background: #eef2f6;
+}
+section[data-testid="stSidebar"] div[role="radiogroup"] label[data-selected="true"],
+section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {
+    background: #2563eb;
+    color: #fff;
+    border-color: #1d4ed8;
+    font-weight: 600;
+}
+
+/* Streamlit Selectbox 내부의 검색 입력창을 숨김 */
+div[data-baseweb="select"] input {
+    caret-color: transparent !important; /* 커서(깜박이) 숨김 */
+}

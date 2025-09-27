@@ -86,7 +86,7 @@ def _do_translation(input_text: str, src_label: str, tgt_label: str, style_label
         output_text = transform(translation, STYLE_MAP[style_label]["label"])
     # 히스토리 저장
     st.session_state.history.insert(0, {
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "timestamp": datetime.now().strftime("%Y-%m-%d"),
         "source_lang": src_label,
         "target_lang": tgt_label,
         "input": input_text,
@@ -189,7 +189,7 @@ elif st.session_state.page == "📄기록":
             filtered = [h for h in filtered if (h["style"] in style_filter)]
 
         for idx, item in enumerate(filtered):
-            with st.expander(f"[{idx+1}] {item['timestamp']} | {item['source_lang']} → {item['target_lang']}" + (f" | 스타일:{item['style']}" if item['style'] else "")):
+            with st.expander(f"[{item['timestamp']}] : {item['input'][:5]} | {item['source_lang']} → {item['target_lang']}" + (f" | 스타일:{item['style']}" if item['style'] else "")):
                 st.markdown("**입력**")
                 st.write(item['input'])
                 st.markdown("**출력**")
@@ -227,43 +227,45 @@ elif st.session_state.page == "📝학습":
     if not st.session_state.history:
         st.info("저장된 번역 기록이 없습니다.")
     else:
-        options = [
-            f"[{i+1}] {h['timestamp']} | {h['source_lang']}→{h['target_lang']}"
-            for i, h in enumerate(st.session_state.history)
-        ]
-        choice = st.selectbox("기록 선택", options)
-        idx = options.index(choice)
-        record = st.session_state.history[idx]
+       options = [
+        f"[{i+1:02}]  {h['timestamp'][:16]}  "
+        f"({h['source_lang']}→{h['target_lang']})"
+        + (f"  –  {h['style']}" if h['style'] else "")
+        for i, h in enumerate(st.session_state.history)
+    ]
+    choice = st.selectbox("기록 선택", options)
+    idx = options.index(choice)
+    record = st.session_state.history[idx]
 
-        # 선택한 기록 표시
-        st.markdown("### 선택한 기록")
-        st.markdown("**입력**")
-        st.write(record['input'])
-        st.markdown("**출력**")
-        st.write(record['output'])
-        st.markdown("---")
+    # 선택한 기록 표시
+    st.markdown("### 선택한 기록")
+    st.markdown("**입력**")
+    st.write(record['input'])
+    st.markdown("**출력**")
+    st.write(record['output'])
+    st.markdown("---")
 
-        # 결과 저장용 세션 키 초기화
-        if 'learning_results' not in st.session_state:
-            st.session_state.learning_results = {"diff": "", "meaning": "", "example": ""}
+    # 결과 저장용 세션 키 초기화
+    if 'learning_results' not in st.session_state:
+        st.session_state.learning_results = {"diff": "", "meaning": "", "example": ""}
 
-        if record["source_lang"]=="한국어" and record["target_lang"]=="한국어":
-            st.markdown("### LLM 학습 도구")
-            if st.button("차이점 확인"):
-                st.session_state.learning_results["diff"] = chat([
-                    {"role":"system","content":"두 문장의 차이점을 간결히 설명"},
-                    {"role":"user","content":f"수정 전: {record['input']}\n수정 후: {record['output']}"}
-                ])
-            if st.button("수정 단어 의미/구조"):
-                st.session_state.learning_results["meaning"] = chat([
-                    {"role":"system","content":"수정된 문장에서 바뀐 단어들의 유의어·동의어 중심 의미와 문법적 특징을 설명"},
-                    {"role":"user","content":f"{record['input']}\n→\n{record['output']}"}
-                ])
+    if record["source_lang"]=="한국어" and record["target_lang"]=="한국어":
+        st.markdown("### LLM 학습 도구")
+        if st.button("차이점 확인"):
+            st.session_state.learning_results["diff"] = chat([
+                {"role":"system","content":"두 문장의 차이점을 간결히 설명"},
+                {"role":"user","content":f"수정 전: {record['input']}\n수정 후: {record['output']}"}
+            ])
+        if st.button("수정 단어 의미/구조"):
+            st.session_state.learning_results["meaning"] = chat([
+                {"role":"system","content":"수정된 문장에서 바뀐 단어들의 유의어·동의어 중심 의미와 문법적 특징을 설명"},
+                {"role":"user","content":f"{record['input']}\n→\n{record['output']}"}
+            ])
             if st.button("공부 예문 생성"):
                 st.session_state.learning_results["example"] = chat([
-                    {"role":"system","content":"수정된 단어를 활용한 한국어 학습용 예문을 3개 제시"},
-                    {"role":"user","content":f"{record['output']}"}
-                ])
+                {"role":"system","content":"수정된 단어를 활용한 한국어 학습용 예문을 3개 제시"},
+                {"role":"user","content":f"{record['output']}"}
+            ])
 
             # 버튼 결과를 항상 유지하여 출력
             if st.session_state.learning_results["diff"]:

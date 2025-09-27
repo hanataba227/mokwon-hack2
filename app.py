@@ -51,6 +51,43 @@ STYLE_MAP = {
     }
 }
 
+# -------------------- 학습(LLM 분석) 프롬프트 템플릿 --------------------
+# ROLE / INPUT / GUIDELINES / OUTPUT FORMAT 구조 유지. service.llm.chat 에서는 messages 배열로 전달.
+LEARNING_PROMPTS = {
+    "diff": (
+        """[ROLE]\n한국어 문장 교정 차이 분석 전문가.\n\n"
+        "[INPUT]\n원문: {original}\n수정문: {revised}\n\n"
+        "[GUIDELINES]\n"
+        "1) 의미 변화, 어휘 교체, 문형/종결어미/시제/높임 변화만 핵심 bullet 로 요약.\n"
+        "2) 수정되지 않은 부분 설명 금지.\n"
+        "3) 추측/과장/평가 금지.\n"
+        "4) 5줄 이내.\n\n"
+        "[OUTPUT FORMAT]\n- 항목1\n- 항목2 ... (불필요한 머리말/맺음말 금지)"""
+    ),
+    "meaning": (
+        """[ROLE]\n한국어 어휘/문법 학습 설명가. 교정 전후 차이를 학습자 관점에서 설명.\n\n"
+        "[INPUT]\n원문: {original}\n수정문: {revised}\n\n"
+        "[GUIDELINES]\n"
+        "1) 바뀐 어휘/표현만 다룬다 (변경되지 않은 단어 배제).\n"
+        "2) 각 항목: (변경된표현) -> 의미 / 쓰임 / 문법 포인트 / 유의어(최대2).\n"
+        "3) 과도한 학술 용어, 한자 괄호 표기 자제.\n"
+        "4) 문장 재작성/추가 번역 금지.\n"
+        "5) 8항목 이내.\n\n"
+        "[OUTPUT FORMAT]\n(표현1) : 의미 / 문법 / 유의어\n(표현2) : ..."""
+    ),
+    "examples": (
+        """[ROLE]\n한국어 예문 생성 튜터. 수정된 문장의 핵심 변경 표현을 반복·강화하는 학습 예문 작성.\n\n"
+        "[INPUT]\n수정문: {revised}\n\n"
+        "[GUIDELINES]\n"
+        "1) 3개의 짧고 자연스러운 예문.\n"
+        "2) 각 예문은 서로 다른 맥락.\n"
+        "3) 어려운 고급어/불필요한 한자어 피함.\n"
+        "4) 동일 핵심 표현 재사용 가능 (학습 강화 목적).\n"
+        "5) 번호 매기기.\n\n"
+        "[OUTPUT FORMAT]\n1) 예문\n2) 예문\n3) 예문"""
+    ),
+}
+
 # -------------------- 세션 초기화 --------------------
 if "page" not in st.session_state:
     st.session_state.page = "홈"
@@ -97,49 +134,82 @@ def _do_translation(input_text: str, src_label: str, tgt_label: str, style_label
 
 # -------------------- 홈 페이지 --------------------
 if st.session_state.page == "🏠홈":
-    st.title("Konnect - 한국어 학습을 위한 스마트 번역 & 학습 도구")
-    st.markdown("#### 유학생이 한국어를 쉽게 배우고, 표현력을 자연스럽게 확장하도록 돕습니다.")
+    st.title("Konnect")
+    st.markdown("#### 한국어 학습을 위한 스마트 번역 & 학습 도구")
     # 홈페이지 타이틀 아래: 우선 images 폴더의 특정 이미지를 먼저 표시하고 충분한 간격을 둔 뒤 다른 이미지를 표시
     first_img = "images/translate-translation-vector-logo-design-template_1141934-3723.jpg"
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         st.image(first_img, use_container_width=True)
 
     st.markdown("---")
     st.header("다국어 번역 & 한국어 문체 변환")
-    st.subheader("설명")
-    st.write(
-        """한국어와 영어/일본어/중국어/베트남어 간 번역 및
-        한국어 결과에 대한 문체(문어체/구어체/쉬운문장/한자어) 변환을 지원합니다.
-        좌측 사이드바에서 '번역' 페이지로 이동하여 텍스트 또는 이미지를 처리하고,
-        생성된 결과는 자동으로 '기록' 페이지에 저장됩니다."""
-    )
-    st.subheader("주요 기능")
+    st.markdown(
+        f"""### 개요
+학습자 친화적인 한↔다국어 번역과 한국어 문체(스타일) 재작성 기능을 통합 제공하는 도구입니다. 결과는 자동으로 기록되어 재사용·학습 분석에 활용할 수 있습니다.
 
-    st.markdown("---")
-    st.markdown(f"#### 현재 저장된 결과 수: {len(st.session_state.history)}")
+### 지원 언어
+- 한국어 ↔ **영어 / 일본어 / 중국어(간체) / 베트남어**
+
+### 번역 품질 원칙
+- 의미/뉘앙스 보존, 과도한 의역·설명 제거
+- 고유명사·형식 유지 / 줄바꿈 구조 반영
+- 학습·교육 맥락에 자연스러운 문장 지향
+
+### 한국어 문체 변환
+| 문체 | 특징 |
+| ---- | ----- |
+| 문어체 | 격식 있고 정제된 공식체 (보고서/논문) |
+| 구어체 | 자연스러운 일상 대화체 (블로그/채팅) |
+| 쉬운문장 | 초급 학습자도 쉽게 읽는 기본 어휘 중심 |
+| 한자어 | 적절한 한자어 활용으로 격식·전문성 강화 |
+| 서술체 | 사건 전개 중심, 시간/흐름 명확 |
+| 묘사체 | 감각·형용 표현 강화로 장면 묘사 강조 |
+
+### 이미지 OCR
+- 이미지 업로드 → 텍스트 추출 → 번역/문체 변환 가능
+- 현재 기본 추출 로직
+
+### 학습 도구 (📝학습 페이지)
+- 교정 전/후 차이 요약 (형태·어미·어휘 변화)
+- 변화된 표현 의미/문법/유의어 정리
+- 학습용 예문 3개 자동 생성
+
+### 기록 & 재사용
+- 모든 결과 자동 저장 / 필터링 / 삭제 / txt 다운로드
+- 기록 항목을 다시 불러와 편집·추가 변환 가능
+
+### 빠른 시작
+1. 사이드바에서 **🔎번역** 선택
+2. 입력 언어 / 타깃 언어 / (한국어 타깃 시) 문체 고르기
+3. 텍스트 입력 또는 이미지 업로드
+4. 실행 → 결과 확인 후 필요 시 **📄기록** / **📝학습** 활용
+
+"""
+    )
 # -------------------- 번역 페이지 --------------------
 elif st.session_state.page == "🔎번역":
     st.title("번역 및 문체 변환")
-    input_mode = st.radio("입력 유형 선택", ("텍스트", "이미지"), horizontal=True)
+    tab_text, tab_image = st.tabs(["텍스트 입력", "이미지 업로드"])
 
-    if input_mode == "텍스트":
+    # --- 텍스트 탭 ---
+    with tab_text:
         col1, col2 = st.columns(2)
         with col1:
-            src_label = st.selectbox("입력 언어", list(LANG_MAP.keys()), index=0)
+            src_label = st.selectbox("입력 언어", list(LANG_MAP.keys()), index=0, key="text_src")
         with col2:
-            tgt_label = st.selectbox("타깃 언어", list(LANG_MAP.keys()), index=1)
-        text_input = st.text_area("번역 또는 문체 변환할 텍스트 입력")
+            tgt_label = st.selectbox("타깃 언어", list(LANG_MAP.keys()), index=1, key="text_tgt")
+        text_input = st.text_area("번역 또는 문체 변환할 텍스트 입력", key="text_input_area")
         style_label = None
         if tgt_label == "한국어":
             style_label = st.selectbox(
                 "한국어 문체 선택",
                 list(STYLE_MAP.keys()),
-                format_func=lambda k: f"{k} ： {STYLE_MAP[k]['desc']}"
+                format_func=lambda k: f"{k} ： {STYLE_MAP[k]['desc']}",
+                key="text_style"
             )
-
-        if st.button("실행", type="primary"):
+        if st.button("텍스트 실행", type="primary", key="run_text"):
             if not text_input.strip():
                 st.warning("텍스트를 입력하세요.")
             else:
@@ -148,32 +218,33 @@ elif st.session_state.page == "🔎번역":
                     st.success("완료")
                     st.subheader("결과")
                     st.write(result)
-                    st.download_button("결과 다운로드", result, file_name="translation.txt")
+                    st.download_button("결과 다운로드", result, file_name="translation.txt", key="dl_text_result")
                 except ValueError as e:
                     st.error(f"오류: {e}")
 
-    else:  # 이미지
-        uploaded = st.file_uploader("이미지 업로드", type=["jpg", "jpeg", "png"])
+    # --- 이미지 탭 ---
+    with tab_image:
+        uploaded = st.file_uploader("이미지 업로드", type=["jpg", "jpeg", "png"], key="img_uploader")
         if uploaded is not None:
             col1, col2 = st.columns(2)
             with col1:
-                src_label = st.selectbox("입력 언어", list(LANG_MAP.keys()), index=0, key="img_src")
+                src_label_img = st.selectbox("입력 언어", list(LANG_MAP.keys()), index=0, key="img_src")
             with col2:
-                tgt_label = st.selectbox("타깃 언어", list(LANG_MAP.keys()), index=1, key="img_tgt")
-            style_label = None
-            if tgt_label == "한국어":
-                style_label = st.selectbox("한국어 문체 선택", list(STYLE_MAP.keys()), key="img_style")
-            if st.button("실행", type="primary"):
+                tgt_label_img = st.selectbox("타깃 언어", list(LANG_MAP.keys()), index=1, key="img_tgt")
+            style_label_img = None
+            if tgt_label_img == "한국어":
+                style_label_img = st.selectbox("한국어 문체 선택", list(STYLE_MAP.keys()), key="img_style")
+            if st.button("이미지 실행", type="primary", key="run_image"):
                 extracted = extract_text_from_image(uploaded)
                 if not extracted:
                     st.warning("이미지에서 텍스트를 추출하지 못했습니다.")
                 else:
                     try:
-                        result = _do_translation(extracted, src_label, tgt_label, style_label)
+                        result = _do_translation(extracted, src_label_img, tgt_label_img, style_label_img)
                         st.success("완료")
                         st.subheader("결과")
                         st.write(result)
-                        st.download_button("결과 다운로드", result, file_name="translation.txt")
+                        st.download_button("결과 다운로드", result, file_name="translation.txt", key="dl_image_result")
                     except ValueError as e:
                         st.error(f"오류: {e}")
         else:
@@ -261,22 +332,28 @@ elif st.session_state.page == "📝학습":
             col1, col2, col3 = st.columns(3)
             with col1:
                 if st.button("차이점 확인"):
-                    st.session_state.learning_results["diff"] = chat([
-                        {"role": "system", "content": "두 문장의 차이점을 간결히 설명"},
-                        {"role": "user", "content": f"수정 전: {record['input']}\n수정 후: {record['output']}"}
-                    ])
+                    with st.spinner("차이점 분석 중..."):
+                        prompt = LEARNING_PROMPTS["diff"].format(original=record['input'], revised=record['output'])
+                        st.session_state.learning_results["diff"] = chat([
+                            {"role": "system", "content": "주어진 지침을 엄격히 따르는 한국어 문장 차이 분석기"},
+                            {"role": "user", "content": prompt}
+                        ])
             with col2:
                 if st.button("수정 단어 의미/구조"):
-                    st.session_state.learning_results["meaning"] = chat([
-                        {"role": "system", "content": "수정된 문장에서 바뀐 단어들의 유의어·동의어 중심 의미와 문법적 특징을 설명"},
-                        {"role": "user", "content": f"{record['input']}\n→\n{record['output']}"}
-                    ])
+                    with st.spinner("의미/구조 설명 생성 중..."):
+                        prompt = LEARNING_PROMPTS["meaning"].format(original=record['input'], revised=record['output'])
+                        st.session_state.learning_results["meaning"] = chat([
+                            {"role": "system", "content": "지침 기반 한국어 표현 변화 의미·문법 설명기"},
+                            {"role": "user", "content": prompt}
+                        ])
             with col3:
                 if st.button("공부 예문 생성"):
-                    st.session_state.learning_results["example"] = chat([
-                        {"role": "system", "content": "수정된 단어를 활용한 한국어 학습용 예문을 3개 제시"},
-                        {"role": "user", "content": f"{record['output']}"}
-                    ])
+                    with st.spinner("예문 생성 중..."):
+                        prompt = LEARNING_PROMPTS["examples"].format(revised=record['output'])
+                        st.session_state.learning_results["example"] = chat([
+                            {"role": "system", "content": "지침을 따르는 한국어 학습 예문 생성기"},
+                            {"role": "user", "content": prompt}
+                        ])
 
             # 버튼 결과 출력
             if st.session_state.learning_results["diff"]:
@@ -288,5 +365,3 @@ elif st.session_state.page == "📝학습":
             if st.session_state.learning_results["example"]:
                 st.subheader("공부 예문")
                 st.write(st.session_state.learning_results["example"])
-            else:
-                st.warning("한국어에서 한국어로 수정된 기록만 사용 가능합니다.")

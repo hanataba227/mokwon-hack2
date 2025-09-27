@@ -1,5 +1,5 @@
 :root{
-    --green-900: #05400a;
+    --green-900: #05400a; /* 기존 포인트 컬러 */
     --green-700: #0b5d2b;
     --green-500: #2fa84f;
     --green-400: #63d37a;
@@ -8,12 +8,13 @@
     --blue-500: #1E90FF;
     --blue-700: #1C86EE;
     --icon-size: 22px;
+    --text-main: #000000; /* 일반 본문 기본 색상 */
 }
 
 /* 전체 배경 및 기본 텍스트 */
 html, body, .stApp {
     background: var(--white);
-    color: var(--green-900);
+    color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
 }
 
@@ -83,7 +84,7 @@ section[data-testid="stSidebar"] button[role="button"]:hover {
     border: 1px solid #edf9ee;
     border-radius: 10px;
     padding: 0.6rem;
-    color: var(--green-900);
+    color: var(--text-main);
 }
 
 /* 메인 화면 입력 요소 */
@@ -92,7 +93,7 @@ textarea, input, .stTextInput>div>input, .stTextArea>div>textarea {
     border: 1px solid #e0f1e3 !important;
     border-radius: 8px !important;
     padding: 8px !important;
-    color: var(--green-900) !important;
+    color: var(--text-main) !important;
 }
 
 /* 버튼 스타일 */
@@ -109,14 +110,14 @@ button[role="button"]:hover, .stButton>button:hover {
 }
 
 /* 상태/알림 박스 */
-.stAlert [data-testid="stMarkdownContainer"] p { color: var(--green-900); }
+.stAlert [data-testid="stMarkdownContainer"] p { color: var(--text-main); }
 
 /* 기본 텍스트 통일 (사이드바 제외) */
 .stMarkdown, .stWrite, .css-1v3fvcr p,
 .stTextInput label, .stTextArea label,
 .stRadio label, .stSelectbox label,
 .stTextInput div>input::placeholder, .stTextArea div>textarea::placeholder {
-    color: var(--green-900) !important;
+    color: var(--text-main) !important;
 }
 
 /* 다운로드 버튼 */
@@ -128,17 +129,17 @@ button[role="button"]:hover, .stButton>button:hover {
 
 /* 캡션/작은 텍스트 */
 .stCaption, .css-1v3fvcr .stCaption {
-    color: var(--green-900);
+    color: var(--text-main);
 }
 
 /* 사이드바 토글 버튼 */
 button[title="Open sidebar"], button[title="Close sidebar"] {
-    color: var(--green-900) !important;
+    color: var(--text-main) !important;
     background-color: transparent !important;
 }
 
 /* 번역탭 입력/타깃 언어 선택 */
-.stSelectbox.label-input, .stSelectbox.label-input > div > div { color: var(--green-900) !important; }
+.stSelectbox.label-input, .stSelectbox.label-input > div > div { color: var(--text-main) !important; }
 .stSelectbox.label-target, .stSelectbox.label-target > div > div { color: var(--blue-500) !important; }
 
 /* ──────────────────────────────────────────
@@ -171,7 +172,7 @@ section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="st
 /* 2: 번역(문서) */
 section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(2)::before{
     -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
-            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+        mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
 }
 
 /* 3: 기록(햄버거) */
@@ -221,10 +222,11 @@ section[data-testid="stSidebar"] .stButton:nth-of-type(2)>button::before{
     -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
             mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
 }
+/* 위 라인 stray 제거됨: --text-main 은 :root 에 정의됨 */
 /* 3 기록 */
 section[data-testid="stSidebar"] .stButton:nth-of-type(3)>button::before{
     -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
-            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+    color: var(--text-main);
 }
 /* 버튼 메뉴 마지막 아래 선 */
 section[data-testid="stSidebar"] .stButton:last-of-type{ position:relative; }
@@ -235,8 +237,7 @@ section[data-testid="stSidebar"] .stButton:last-of-type::after{
 
 /* ──────────────────────────────────────────
    (이전 app.py 인라인) 사이드바 라디오를 버튼형으로 재스타일
-   - 원형 라디오 숨김
-   - 라벨을 버튼 UI로 변환
+    - 원형 라디오 숨김
    - 선택/호버 상태 시 강조
 ────────────────────────────────────────── */
 section[data-testid="stSidebar"] div[role="radiogroup"] input[type="radio"] {

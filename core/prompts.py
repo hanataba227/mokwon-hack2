@@ -7,6 +7,8 @@ translation_prompts = {
     "vietnamese_to_korean": "다음 베트남어 문장을 한국어로 번역하세요: {text}",
     "korean_to_chinese": "다음 한국어 문장을 중국어(간체)로 번역하세요: {text}",
     "chinese_to_korean": "다음 중국어 문장을 한국어로 번역하세요: {text}",
+    "korean_to_japanese": "다음 한국어 문장을 일본어로 번역하세요: {text}",
+    "japanese_to_korean": "다음 일본어 문장을 한국어로 번역하세요: {text}",
 }
 
 style_transformation_prompts = {

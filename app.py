@@ -9,6 +9,14 @@ from services.ocr import extract_text_from_image  # OCR
 
 load_dotenv()
 
+with open("style.css", encoding="utf-8") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+
+# --- Streamlit 앱 UI 구성 ---
+
+st.set_page_config(page_title="Ko-Connect", layout="wide")
+
 if not os.getenv("OPENAI_API_KEY"):
     st.error("OPENAI_API_KEY 환경 변수가 설정되지 않았습니다. .env 파일 또는 시스템 환경 변수로 키를 설정하세요.")
     st.stop()

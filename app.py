@@ -1,4 +1,6 @@
 import streamlit as st
+st.set_page_config(page_title="Ko-Connect", layout="wide")
+
 import os
 from dotenv import load_dotenv
 from datetime import datetime
@@ -14,8 +16,6 @@ with open("style.css", encoding="utf-8") as f:
 
 
 # --- Streamlit 앱 UI 구성 ---
-
-st.set_page_config(page_title="Ko-Connect", layout="wide")
 
 if not os.getenv("OPENAI_API_KEY"):
     st.error("OPENAI_API_KEY 환경 변수가 설정되지 않았습니다. .env 파일 또는 시스템 환경 변수로 키를 설정하세요.")
@@ -164,17 +164,17 @@ elif st.session_state.page == "기록":
                         # 재사용 시 번역 페이지로 이동 & 입력 프리필
                         st.session_state.page = "번역"
                         st.session_state.prefill_text = item['input']
-                        st.experimental_rerun()
+                        st.rerun()
                 with col_c:
                     if st.button("삭제", key=f"del_{idx}"):
                         st.session_state.history.remove(item)
-                        st.experimental_rerun()
+                        st.rerun()
 
     # 전체 삭제
     if st.session_state.history:
         if st.button("전체 기록 초기화", type="secondary"):
             st.session_state.history.clear()
-            st.experimental_rerun()
+            st.rerun()
 
 # -------------------- 번역 페이지 프리필 처리 (재사용 기능) --------------------
 if st.session_state.get('page') == '번역' and 'prefill_text' in st.session_state:

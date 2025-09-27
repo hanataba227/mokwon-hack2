@@ -23,7 +23,7 @@ if not os.getenv("OPENAI_API_KEY"):
 
 # -------------------- 전역 상수/매핑 --------------------
 LANG_MAP = {"한국어": "Korean", "영어": "English", "베트남어": "Vietnamese", "중국어": "Chinese"}
-STYLE_MAP = {"문어체": "Formal", "구어체": "Informal", "기초단어": "Basic Vocabulary", "한자어": "Hanja"}
+STYLE_MAP = {"문어체": "Formal", "구어체": "Informal", "쉬운문장": "Basic Vocabulary", "한자어": "Hanja"}
 
 # -------------------- 세션 초기화 --------------------
 if "page" not in st.session_state:
@@ -69,7 +69,7 @@ if st.session_state.page == "홈":
     st.subheader("설명")
     st.write(
         """이 애플리케이션은 한국어와 영어/베트남어/중국어 간 번역 및 
-        한국어 결과에 대한 문체(문어체/구어체/기초단어/한자어) 변환을 지원합니다. 
+        한국어 결과에 대한 문체(문어체/구어체/쉬운문장/한자어) 변환을 지원합니다. 
         좌측 사이드바에서 '번역' 페이지로 이동하여 텍스트 또는 이미지를 처리하고,
         생성된 결과는 자동으로 '기록' 페이지에 저장됩니다."""
     )

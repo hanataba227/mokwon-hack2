@@ -5,6 +5,9 @@
     --green-400: #63d37a;
     --white: #ffffff;
     --muted: #f3fff5;
+    --blue-500: #1E90FF;
+    --blue-700: #1C86EE;
+    --icon-size: 22px;
 }
 
 /* 전체 배경 및 기본 텍스트 */
@@ -28,10 +31,7 @@ section[data-testid="stSidebar"] {
 }
 
 /* 사이드바 내부 모든 텍스트 흰색 */
-section[data-testid="stSidebar"] *,
-section[data-testid="stSidebar"] label,
-section[data-testid="stSidebar"] div,
-section[data-testid="stSidebar"] span {
+section[data-testid="stSidebar"] * {
     color: var(--white) !important;
 }
 
@@ -47,17 +47,34 @@ section[data-testid="stSidebar"] .stTextArea>div>textarea {
     padding: 8px 10px !important;
     margin: 4px 0;
     width: 100%;
-    display: block;
+    display: flex;
+    align-items: center;
     box-sizing: border-box;
 }
 
-/* ⭐ 사이드바 선택항목 Hover 시 진한 초록 배경 */
+/* 사이드바 선택항목 Hover 시 진한 초록 배경 */
 section[data-testid="stSidebar"] .stRadio > div > label:hover,
 section[data-testid="stSidebar"] .stSelectbox > div:hover,
 section[data-testid="stSidebar"] .stMultiselect > div:hover {
     background-color: var(--green-900) !important;
     border-radius: 6px;
     transition: background-color 0.2s ease-in-out;
+}
+
+/* 사이드바 버튼 색상 파랑, Hover 진한 파랑 */
+section[data-testid="stSidebar"] .stButton>button,
+section[data-testid="stSidebar"] button[role="button"] {
+    background-color: var(--blue-500) !important;
+    color: var(--white) !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+section[data-testid="stSidebar"] .stButton>button:hover,
+section[data-testid="stSidebar"] button[role="button"]:hover {
+    background-color: var(--blue-700) !important;
 }
 
 /* 컨테이너 카드 스타일 (메인 화면 글씨 초록색) */
@@ -121,9 +138,97 @@ button[title="Open sidebar"], button[title="Close sidebar"] {
 }
 
 /* 번역탭 입력/타깃 언어 선택 */
-.stSelectbox.label-input, .stSelectbox.label-input > div > div {
-    color: var(--green-900) !important; /* 입력 언어 초록색 */
+.stSelectbox.label-input, .stSelectbox.label-input > div > div { color: var(--green-900) !important; }
+.stSelectbox.label-target, .stSelectbox.label-target > div > div { color: var(--blue-500) !important; }
+
+/* ──────────────────────────────────────────
+   사이드바 페이지 링크: 아이콘 + 정렬
+   (st.page_link 기반 a[data-testid^="stPageLink"])
+────────────────────────────────────────── */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]{
+    display:flex; align-items:center; gap:12px;
 }
-.stSelectbox.label-target, .stSelectbox.label-target > div > div {
-    color: #0000FF !important; /* 타깃 언어 파란색 */
+
+/* 공통 아이콘 베이스 (currentColor = 흰색) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]::before{
+    content:"";
+    width: var(--icon-size);
+    height: var(--icon-size);
+    display:inline-block;
+    background: currentColor;
+    -webkit-mask-size: contain; mask-size: contain;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    opacity: .95;
+}
+
+/* 1: 홈(집) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(1)::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+}
+
+/* 2: 번역(문서) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(2)::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+}
+
+/* 3: 기록(햄버거) */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:nth-of-type(3)::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+}
+
+/* ──────────────────────────────────────────
+   선택사항(메뉴)과 세션 안내 사이 얇은 구분선
+   - 마지막 페이지 링크 아래에 선 생성
+────────────────────────────────────────── */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:last-of-type{
+    position:relative;
+}
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] a[data-testid^="stPageLink"]:last-of-type::after{
+    content:"";
+    display:block;
+    height:1px;
+    background: rgba(255,255,255,.3);
+    margin-top:18px;
+    border-radius:1px;
+}
+
+/* ───────── Fallback: 메뉴가 버튼으로 구현된 경우(선/아이콘) ───────── */
+section[data-testid="stSidebar"] .stButton { display:block; }
+section[data-testid="stSidebar"] .stButton>button{
+    display:flex; align-items:center; gap:12px;
+}
+section[data-testid="stSidebar"] .stButton:nth-of-type(1)>button::before,
+section[data-testid="stSidebar"] .stButton:nth-of-type(2)>button::before,
+section[data-testid="stSidebar"] .stButton:nth-of-type(3)>button::before{
+    content:""; width:var(--icon-size); height:var(--icon-size);
+    background: currentColor;
+    -webkit-mask-size: contain; mask-size: contain;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    opacity:.95;
+}
+/* 1 홈 */
+section[data-testid="stSidebar"] .stButton:nth-of-type(1)>button::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/></svg>");
+}
+/* 2 번역 */
+section[data-testid="stSidebar"] .stButton:nth-of-type(2)>button::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zM13 3.5L18.5 9H13V3.5z'/></svg>");
+}
+/* 3 기록 */
+section[data-testid="stSidebar"] .stButton:nth-of-type(3)>button::before{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z'/></svg>");
+}
+/* 버튼 메뉴 마지막 아래 선 */
+section[data-testid="stSidebar"] .stButton:last-of-type{ position:relative; }
+section[data-testid="stSidebar"] .stButton:last-of-type::after{
+    content:""; display:block; height:1px;
+    background: rgba(255,255,255,.3); margin-top:18px; border-radius:1px;
 }
